@@ -1,0 +1,16 @@
+{
+  "name": "kanban-hermes-openclaw",
+  "version": "1.0.0",
+  "description": "Hermes Orchestrator and OpenClaw AI Agent for Slack Kanban Commands",
+  "main": "hermes/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node hermes/server.js",
+    "dev": "node hermes/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+}

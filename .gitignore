@@ -1,6 +1,7 @@
 # Dependencies
 /node_modules
 /frontend/node_modules
+/integrations/node_modules
 /backend/vendor
 /vendor
 /tools

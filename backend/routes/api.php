@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AgentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BoardController;
 use App\Http\Controllers\Api\ColumnController;
@@ -43,4 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/tasks/{task}',            [TaskController::class, 'update']);
     Route::delete('/tasks/{task}',         [TaskController::class, 'destroy']);
     Route::patch('/tasks/{task}/move',     [TaskController::class, 'move']);
+
+    // OpenClaw & Hermes Agent endpoints
+    Route::get('/agent/context',           [AgentController::class, 'context']);
+    Route::post('/tasks/{task}/assign',    [AgentController::class, 'assign']);
 });

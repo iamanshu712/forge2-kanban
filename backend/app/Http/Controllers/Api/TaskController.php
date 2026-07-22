@@ -18,6 +18,7 @@ class TaskController extends Controller
             'description' => ['nullable', 'string'],
             'due_date'    => ['nullable', 'date'],
             'priority'    => ['nullable', 'in:low,medium,high'],
+            'assigned_to' => ['nullable', 'integer', 'exists:users,id'],
         ]);
 
         $maxPos = $column->tasks()->max('position');
@@ -25,6 +26,7 @@ class TaskController extends Controller
         $data['column_id'] = $column->id;
 
         $task = Task::create($data);
+        $task->load('assignee');
 
         return response()->json($task, 201);
     }
@@ -33,7 +35,7 @@ class TaskController extends Controller
     {
         $this->authorize('view', $task->column->board);
 
-        return response()->json($task);
+        return response()->json($task->load('assignee'));
     }
 
     public function update(Request $request, Task $task)
@@ -45,11 +47,12 @@ class TaskController extends Controller
             'description' => ['nullable', 'string'],
             'due_date'    => ['nullable', 'date'],
             'priority'    => ['nullable', 'in:low,medium,high'],
+            'assigned_to' => ['nullable', 'integer', 'exists:users,id'],
         ]);
 
         $task->update($data);
 
-        return response()->json($task);
+        return response()->json($task->load('assignee'));
     }
 
     public function destroy(Request $request, Task $task)

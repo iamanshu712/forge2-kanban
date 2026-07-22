@@ -22,6 +22,15 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Seed deterministic Sanctum token for OpenClaw/Hermes agent
+        $user->tokens()->firstOrCreate(
+            ['name' => 'AgentToken'],
+            [
+                'token'     => hash('sha256', 'EACi2RP58oKlfaeby8iiEAip7wEcNwBzkrV4wlCF7ac2c493'),
+                'abilities' => ['*'],
+            ]
+        );
+
         // Demo board
         $board = Board::create([
             'user_id'     => $user->id,

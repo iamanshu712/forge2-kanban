@@ -16,6 +16,7 @@ class Task extends Model
         'position',
         'due_date',
         'priority',
+        'assigned_to',
     ];
 
     protected function casts(): array
@@ -28,5 +29,10 @@ class Task extends Model
     public function column()
     {
         return $this->belongsTo(Column::class);
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 }

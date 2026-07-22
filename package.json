@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npx concurrently -k -n \"backend,frontend\" -c \"cyan,magenta\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\"",
-    "dev": "npx concurrently -k -n \"backend,frontend\" -c \"cyan,magenta\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\"",
-    "setup": "cd backend && composer install && php artisan migrate --seed && cd ../frontend && npm install"
+    "start": "npx concurrently -k -n \"backend,frontend,hermes\" -c \"cyan,magenta,yellow\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\" \"cd integrations && npm start\"",
+    "dev": "npx concurrently -k -n \"backend,frontend,hermes\" -c \"cyan,magenta,yellow\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\" \"cd integrations && npm start\"",
+    "start:services": "npx concurrently -k -n \"backend,frontend,hermes\" -c \"cyan,magenta,yellow\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\" \"cd integrations && npm start\"",
+    "start:hermes": "cd integrations && npm start",
+    "setup": "cd backend && composer install && php artisan migrate --seed && cd ../frontend && npm install && cd ../integrations && npm install"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
