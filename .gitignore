@@ -12,7 +12,6 @@
 
 # Environment & local config
 .env
-backend/.env
 frontend/.env
 *.local
 
