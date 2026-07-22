@@ -2,13 +2,20 @@ import axios from 'axios';
 
 // ─── Axios Instance ───────────────────────────────────────────────────────────
 
+const rawBaseUrl = (import.meta.env.VITE_API_URL as string | undefined) || '';
+
+let baseURL = '/api';
+if (rawBaseUrl.trim()) {
+  const trimmed = rawBaseUrl.trim().replace(/\/+$/, '');
+  baseURL = trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+}
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  withCredentials: true,
 });
 
 // ─── Request Interceptor: Attach Token ───────────────────────────────────────
