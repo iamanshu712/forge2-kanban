@@ -9,6 +9,7 @@
     "dev": "node hermes/server.js"
   },
   "dependencies": {
+    "@slack/bolt": "^5.0.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "express": "^4.21.1"

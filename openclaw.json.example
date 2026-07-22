@@ -1,0 +1,24 @@
+{
+  "name": "kanban-openclaw-agent",
+  "version": "1.0.0",
+  "description": "OpenClaw AI Agent configuration for Slack Kanban extension",
+  "orchestrator": "hermes",
+  "models": {
+    "groq": "your-groq-key",
+    "gemini": "your-gemini-key"
+  },
+  "channels": {
+    "sprint": "#sprint-main",
+    "coder": "#agent-coder",
+    "log": "#agent-log"
+  },
+  "api": {
+    "url": "http://127.0.0.1:8000/api"
+  },
+  "tools": [
+    "create_task",
+    "list_tasks",
+    "move_task",
+    "assign_task"
+  ]
+}
