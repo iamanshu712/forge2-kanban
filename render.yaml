@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: forge2-kanban-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_NAME
+        value: ForgeKanban
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        value: base64:PYrEeQtLRkqU3A8pJuD5vlV9sZnXWkMb6OHFNhqG1Tc=
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: database/database.sqlite
+      - key: SANCTUM_STATEFUL_DOMAINS
+        value: localhost:5173,forge2-kanban-api.onrender.com
