@@ -3,11 +3,11 @@ import axios from 'axios';
 
 // ─── Axios Instance ───────────────────────────────────────────────────────────
 
-const rawBaseUrl = (import.meta.env.VITE_API_URL as string | undefined) || '';
+const envUrl = import.meta.env.VITE_API_URL;
 
-let baseURL = '/api';
-if (rawBaseUrl.trim()) {
-  const trimmed = rawBaseUrl.trim().replace(/\/+$/, '');
+let baseURL = 'https://forge2-kanban-3.onrender.com/api';
+if (typeof envUrl === 'string' && envUrl.trim().length > 0) {
+  const trimmed = envUrl.trim().replace(/\/+$/, '');
   baseURL = trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
 }
 
