@@ -1,4 +1,4 @@
-FROM php:8.2-cli-alpine
+FROM php:8.4-cli-alpine
 
 # Install SQLite and required system dependencies
 RUN apk add --no-cache \
@@ -21,7 +21,7 @@ WORKDIR /app
 COPY backend/ .
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-interaction
 
 # Create SQLite database file and fix permissions
 RUN mkdir -p database storage/framework/views storage/framework/sessions storage/framework/cache storage/logs \
