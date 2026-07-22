@@ -1,0 +1,13 @@
+{
+  "name": "forge2-kanban",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx concurrently -k -n \"backend,frontend\" -c \"cyan,magenta\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\"",
+    "dev": "npx concurrently -k -n \"backend,frontend\" -c \"cyan,magenta\" \"cd backend && php -S 127.0.0.1:8000 -t public\" \"cd frontend && npm run dev\"",
+    "setup": "cd backend && composer install && php artisan migrate --seed && cd ../frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

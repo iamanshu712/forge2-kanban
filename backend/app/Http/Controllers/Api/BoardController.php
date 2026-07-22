@@ -8,52 +8,62 @@ use Illuminate\Http\Request;
 
 class BoardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Board::withCount('lists')->orderByDesc('id')->get();
+        $boards = $request->user()
+            ->boards()
+            ->withCount('columns')
+            ->latest()
+            ->get();
+
+        return response()->json($boards);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name'        => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'color'       => ['nullable', 'string', 'max:20'],
         ]);
 
-        $board = Board::create($data);
+        $board = $request->user()->boards()->create($data);
 
-        // Give every new board a sensible default set of lists.
-        foreach (['To Do', 'Doing', 'Done'] as $i => $name) {
-            $board->lists()->create(['name' => $name, 'position' => $i]);
-        }
-
-        return response()->json($board->load('lists.cards', 'members', 'tags'), 201);
+        return response()->json($board, 201);
     }
 
-    public function show(Board $board)
+    public function show(Request $request, Board $board)
     {
-        return $board->load([
-            'lists.cards.tags',
-            'lists.cards.member',
-            'members',
-            'tags',
-        ]);
+        $this->authorize('view', $board);
+
+        $board->load(['columns' => function ($q) {
+            $q->orderBy('position')->with(['tasks' => function ($q2) {
+                $q2->orderBy('position');
+            }]);
+        }]);
+
+        return response()->json($board);
     }
 
     public function update(Request $request, Board $board)
     {
+        $this->authorize('update', $board);
+
         $data = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
+            'name'        => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'color'       => ['nullable', 'string', 'max:20'],
         ]);
 
         $board->update($data);
 
-        return $board;
+        return response()->json($board);
     }
 
-    public function destroy(Board $board)
+    public function destroy(Request $request, Board $board)
     {
+        $this->authorize('delete', $board);
+
         $board->delete();
 
         return response()->noContent();

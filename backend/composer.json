@@ -1,7 +1,10 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "forge2/kanban-api",
     "type": "project",
-    "description": "Forge 2 qualifier build — tiny Trello-style Kanban API (Laravel + SQLite).",
+    "description": "Forge 2 qualifier — Trello-style Kanban REST API",
+    "keywords": ["laravel", "kanban", "forge2"],
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
@@ -11,7 +14,6 @@
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "phpunit/phpunit": "^11.0"
@@ -26,6 +28,40 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "policy": {
+            "advisories": {
+                "block": false
+            }
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",

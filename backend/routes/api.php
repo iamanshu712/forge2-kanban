@@ -1,38 +1,46 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BoardController;
-use App\Http\Controllers\Api\BoardListController;
-use App\Http\Controllers\Api\CardController;
-use App\Http\Controllers\Api\MemberController;
-use App\Http\Controllers\Api\TagController;
+use App\Http\Controllers\Api\ColumnController;
+use App\Http\Controllers\Api\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Kanban API — tiny Trello-style board
+| Forge Kanban API Routes
 |--------------------------------------------------------------------------
-| Boards -> Lists -> Cards, with tags, member assignment, and due dates.
+| Auth: Sanctum token-based (stateless)
+| All board/column/task routes protected by auth:sanctum middleware
 */
 
-Route::get('/boards', [BoardController::class, 'index']);
-Route::post('/boards', [BoardController::class, 'store']);
-Route::get('/boards/{board}', [BoardController::class, 'show']);
-Route::put('/boards/{board}', [BoardController::class, 'update']);
-Route::delete('/boards/{board}', [BoardController::class, 'destroy']);
+// ── Public auth routes ─────────────────────────────────────────────────────
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login',    [AuthController::class, 'login']);
 
-Route::post('/boards/{board}/lists', [BoardListController::class, 'store']);
-Route::put('/lists/{list}', [BoardListController::class, 'update']);
-Route::delete('/lists/{list}', [BoardListController::class, 'destroy']);
+// ── Protected routes ───────────────────────────────────────────────────────
+Route::middleware('auth:sanctum')->group(function () {
 
-Route::post('/lists/{list}/cards', [CardController::class, 'store']);
-Route::put('/cards/{card}', [CardController::class, 'update']);
-Route::patch('/cards/{card}/move', [CardController::class, 'move']);
-Route::post('/cards/{card}/tags', [CardController::class, 'attachTag']);
-Route::delete('/cards/{card}/tags/{tagId}', [CardController::class, 'detachTag']);
-Route::delete('/cards/{card}', [CardController::class, 'destroy']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user',    [AuthController::class, 'user']);
 
-Route::post('/boards/{board}/tags', [TagController::class, 'store']);
-Route::delete('/tags/{tag}', [TagController::class, 'destroy']);
+    // Boards
+    Route::get('/boards',             [BoardController::class, 'index']);
+    Route::post('/boards',            [BoardController::class, 'store']);
+    Route::get('/boards/{board}',     [BoardController::class, 'show']);
+    Route::put('/boards/{board}',     [BoardController::class, 'update']);
+    Route::delete('/boards/{board}',  [BoardController::class, 'destroy']);
 
-Route::post('/boards/{board}/members', [MemberController::class, 'store']);
-Route::delete('/members/{member}', [MemberController::class, 'destroy']);
+    // Columns (scoped under board for creation)
+    Route::post('/boards/{board}/columns',  [ColumnController::class, 'store']);
+    Route::put('/columns/{column}',         [ColumnController::class, 'update']);
+    Route::delete('/columns/{column}',      [ColumnController::class, 'destroy']);
+    Route::patch('/columns/{column}/reorder', [ColumnController::class, 'reorder']);
+
+    // Tasks (scoped under column for creation)
+    Route::post('/columns/{column}/tasks', [TaskController::class, 'store']);
+    Route::get('/tasks/{task}',            [TaskController::class, 'show']);
+    Route::put('/tasks/{task}',            [TaskController::class, 'update']);
+    Route::delete('/tasks/{task}',         [TaskController::class, 'destroy']);
+    Route::patch('/tasks/{task}/move',     [TaskController::class, 'move']);
+});

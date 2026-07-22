@@ -1,0 +1,32 @@
+# Dependencies
+/node_modules
+/frontend/node_modules
+/backend/vendor
+/vendor
+/tools
+/laravel-fresh
+
+# Build outputs
+/frontend/dist
+/dist
+
+# Environment & local config
+.env
+backend/.env
+frontend/.env
+*.local
+
+# Database
+backend/database/database.sqlite
+database.sqlite
+
+# Storage & Logs
+backend/storage/*.key
+backend/storage/logs/*.log
+*.log
+
+# IDE & OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db

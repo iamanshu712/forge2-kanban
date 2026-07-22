@@ -9,20 +9,15 @@ class Board extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['user_id', 'name', 'description', 'color'];
 
-    public function lists()
+    public function user()
     {
-        return $this->hasMany(BoardList::class)->orderBy('position');
+        return $this->belongsTo(User::class);
     }
 
-    public function members()
+    public function columns()
     {
-        return $this->hasMany(Member::class);
-    }
-
-    public function tags()
-    {
-        return $this->hasMany(Tag::class);
+        return $this->hasMany(Column::class)->orderBy('position');
     }
 }
