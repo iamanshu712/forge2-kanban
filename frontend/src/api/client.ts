@@ -3,16 +3,10 @@ import axios from 'axios';
 
 // ─── Axios Instance ───────────────────────────────────────────────────────────
 
-const envUrl = import.meta.env.VITE_API_URL;
-
-let baseURL = 'https://forge2-kanban-3.onrender.com/api';
-if (typeof envUrl === 'string' && envUrl.trim().length > 0) {
-  const trimmed = envUrl.trim().replace(/\/+$/, '');
-  baseURL = trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
-}
+const RENDER_BACKEND_URL = 'https://forge2-kanban-3.onrender.com/api';
 
 const api = axios.create({
-  baseURL,
+  baseURL: RENDER_BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
